@@ -5,6 +5,11 @@
  */
 package Presentacion;
 
+import Datos.VHabitacion;
+import Logica.FHabitacion;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Tester
@@ -17,7 +22,67 @@ public class FrmHabitacion extends javax.swing.JFrame {
     public FrmHabitacion() {
         initComponents();
     }
+    
+    private String accion = "guardar";
+    
+    private void ocultarColumnas() {
+        tablalistado.getColumnModel().getColumn(0).setMaxWidth(0);
+        tablalistado.getColumnModel().getColumn(0).setMinWidth(0);
+        tablalistado.getColumnModel().getColumn(0).setPreferredWidth(0);
+    }
+    
+    public void inhabilitar() {
+        txtidhabitacion.setVisible(true);
+        cbopiso.setEnabled(false);
+        txtnumero.setEnabled(false);
+        txtdescripcion.setEnabled(false);
+        txtcaracteristicas.setEnabled(false);
+        txtprecio_diario.setEnabled(false);
+        cboestado.setEnabled(false);
+        cbotipo_habitacion.setEnabled(false);
+        
+        btnguardar.setEnabled(false);
+        btncancelar.setEnabled(false);
+        btneliminar.setEnabled(false);
+        txtidhabitacion.setText("");
+        txtprecio_diario.setText("");
+        txtcaracteristicas.setText("");
+        txtdescripcion.setText("");   
+    }
+    
+    public void habilitar() {
+        txtidhabitacion.setVisible(true);
+        cbopiso.setEnabled(true);
+        txtnumero.setEnabled(true);
+        txtdescripcion.setEnabled(true);
+        txtcaracteristicas.setEnabled(true);
+        txtprecio_diario.setEnabled(true);
+        cboestado.setEnabled(true);
+        cbotipo_habitacion.setEnabled(true);
 
+        btnguardar.setEnabled(true);
+        btncancelar.setEnabled(true);
+        btneliminar.setEnabled(true);
+        txtidhabitacion.setText("");
+        txtprecio_diario.setText("");
+        txtcaracteristicas.setText("");
+        txtdescripcion.setText("");   
+    }
+    
+    public void mostrar(String buscar) {
+        try {
+            DefaultTableModel modelo;
+            FHabitacion func = new FHabitacion();
+            modelo = func.mostrar(buscar);
+            
+            tablalistado.setModel(modelo);
+            this.ocultarColumnas();
+            lbltotalregistros.setText("Total Registros : " + Integer.toString(func.totalregistros));
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,26 +103,26 @@ public class FrmHabitacion extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtcaracteristicas = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        txtdescripcion1 = new javax.swing.JTextArea();
+        txtdescripcion = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtnumero1 = new javax.swing.JTextField();
+        txtnumero = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         cbotipo_habitacion = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
-        cboestado1 = new javax.swing.JComboBox<>();
+        cboestado = new javax.swing.JComboBox<>();
         btnnuevo = new javax.swing.JButton();
         btnguardar = new javax.swing.JButton();
         btncancelar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablalistado = new javax.swing.JTable();
         jLabel9 = new javax.swing.JLabel();
         txtbuscar = new javax.swing.JTextField();
         btnbuscar = new javax.swing.JButton();
         btneliminar = new javax.swing.JButton();
         btnsalir = new javax.swing.JButton();
-        lblregistros = new javax.swing.JLabel();
+        lbltotalregistros = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -91,17 +156,17 @@ public class FrmHabitacion extends javax.swing.JFrame {
         txtcaracteristicas.setRows(5);
         jScrollPane1.setViewportView(txtcaracteristicas);
 
-        txtdescripcion1.setColumns(20);
-        txtdescripcion1.setRows(5);
-        jScrollPane2.setViewportView(txtdescripcion1);
+        txtdescripcion.setColumns(20);
+        txtdescripcion.setRows(5);
+        jScrollPane2.setViewportView(txtdescripcion);
 
         jLabel5.setText("Caracteristicas");
 
         jLabel6.setText("Precio Diario");
 
-        txtnumero1.addActionListener(new java.awt.event.ActionListener() {
+        txtnumero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtnumero1ActionPerformed(evt);
+                txtnumeroActionPerformed(evt);
             }
         });
 
@@ -111,17 +176,27 @@ public class FrmHabitacion extends javax.swing.JFrame {
 
         jLabel8.setText("Tipo Habitación");
 
-        cboestado1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disponible", "Ocupado", "Mantenimiento" }));
+        cboestado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disponible", "Ocupado", "Mantenimiento" }));
 
         btnnuevo.setBackground(new java.awt.Color(51, 51, 51));
         btnnuevo.setForeground(new java.awt.Color(255, 255, 255));
         btnnuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Files/Ok-icon (1).png"))); // NOI18N
         btnnuevo.setText("Nuevo");
+        btnnuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnnuevoActionPerformed(evt);
+            }
+        });
 
         btnguardar.setBackground(new java.awt.Color(51, 51, 51));
         btnguardar.setForeground(new java.awt.Color(255, 255, 255));
         btnguardar.setIcon(new javax.swing.ImageIcon("C:\\Users\\Tester\\Desktop\\save.png")); // NOI18N
-        btnguardar.setText("Nuevo");
+        btnguardar.setText("Guardar");
+        btnguardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnguardarActionPerformed(evt);
+            }
+        });
 
         btncancelar.setBackground(new java.awt.Color(51, 51, 51));
         btncancelar.setForeground(new java.awt.Color(255, 255, 255));
@@ -149,9 +224,9 @@ public class FrmHabitacion extends javax.swing.JFrame {
                         .addComponent(txtidhabitacion)
                         .addComponent(cbopiso, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
-                        .addComponent(txtnumero1, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(txtnumero, javax.swing.GroupLayout.Alignment.TRAILING))
                     .addComponent(txtprecio_diario, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboestado1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cboestado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(105, 105, 105))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(147, 147, 147)
@@ -173,7 +248,7 @@ public class FrmHabitacion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(txtidhabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(txtnumero1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtnumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -194,7 +269,7 @@ public class FrmHabitacion extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(cboestado1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboestado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -215,7 +290,7 @@ public class FrmHabitacion extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 153));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Listado de Habitaciones"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablalistado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -226,7 +301,7 @@ public class FrmHabitacion extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane3.setViewportView(jTable1);
+        jScrollPane3.setViewportView(tablalistado);
 
         jLabel9.setText("Buscar");
 
@@ -245,7 +320,7 @@ public class FrmHabitacion extends javax.swing.JFrame {
         btnsalir.setIcon(new javax.swing.ImageIcon("C:\\Users\\Tester\\Desktop\\home.png")); // NOI18N
         btnsalir.setText("Salir");
 
-        lblregistros.setText("Registros");
+        lbltotalregistros.setText("Registros");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -268,7 +343,7 @@ public class FrmHabitacion extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblregistros)
+                .addComponent(lbltotalregistros)
                 .addGap(182, 182, 182))
         );
         jPanel2Layout.setVerticalGroup(
@@ -284,7 +359,7 @@ public class FrmHabitacion extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(lblregistros)
+                .addComponent(lbltotalregistros)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -328,9 +403,58 @@ public class FrmHabitacion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtidhabitacionActionPerformed
 
-    private void txtnumero1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnumero1ActionPerformed
+    private void txtnumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnumeroActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtnumero1ActionPerformed
+    }//GEN-LAST:event_txtnumeroActionPerformed
+
+    private void btnnuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnuevoActionPerformed
+        // TODO add your handling code here:
+        this.habilitar();
+        btnguardar.setText("Guardar");
+        this.accion = "guardar";
+    }//GEN-LAST:event_btnnuevoActionPerformed
+
+    private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
+        // TODO add your handling code here:
+        if(txtnumero.getText().length() == 0) {
+            JOptionPane.showConfirmDialog(rootPane, "Deberia Ingresar un Número de habitación");
+            txtnumero.requestFocus();
+        }
+        
+        if(txtdescripcion.getText().length() == 0) {
+            JOptionPane.showConfirmDialog(rootPane, "Deberia Ingresar la Descripcion de la habitación");
+            txtdescripcion.requestFocus();
+        }
+        
+        if(txtprecio_diario.getText().length() == 0) {
+            JOptionPane.showConfirmDialog(rootPane, "Deberia Ingresar el precio diario de la habitacion");
+            txtprecio_diario.requestFocus();
+        }
+        
+        if(txtcaracteristicas.getText().length() == 0) {
+            JOptionPane.showConfirmDialog(rootPane, "Deberia Ingresar la Caracteristicas de la habitación");
+            txtcaracteristicas.requestFocus();
+        }
+        
+        VHabitacion dts = new VHabitacion();
+        FHabitacion func = new FHabitacion();
+        
+        dts.setNumero(txtnumero.getText());
+        
+        int seleccionado = cbopiso.getSelectedIndex();
+        dts.setPiso((String) cbopiso.getItemAt(seleccionado));
+        
+        dts.setDescripcion(txtdescripcion.getText());
+        dts.setCaracteristicas(txtcaracteristicas.getText());
+        dts.setPrecio_diario(Double.parseDouble(txtprecio_diario.getText()));
+        
+        seleccionado = cboestado.getSelectedIndex();
+        dts.setPiso((String) cboestado.getItemAt(seleccionado));
+        
+        seleccionado = cbotipo_habitacion.getSelectedIndex();
+        dts.setPiso((String) cbotipo_habitacion.getItemAt(seleccionado));
+        
+    }//GEN-LAST:event_btnguardarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -374,7 +498,7 @@ public class FrmHabitacion extends javax.swing.JFrame {
     private javax.swing.JButton btnguardar;
     private javax.swing.JButton btnnuevo;
     private javax.swing.JButton btnsalir;
-    private javax.swing.JComboBox<String> cboestado1;
+    private javax.swing.JComboBox<String> cboestado;
     private javax.swing.JComboBox<String> cbopiso;
     private javax.swing.JComboBox<String> cbotipo_habitacion;
     private javax.swing.JLabel jLabel1;
@@ -391,13 +515,13 @@ public class FrmHabitacion extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JLabel lblregistros;
+    private javax.swing.JLabel lbltotalregistros;
+    private javax.swing.JTable tablalistado;
     private javax.swing.JTextField txtbuscar;
     private javax.swing.JTextArea txtcaracteristicas;
-    private javax.swing.JTextArea txtdescripcion1;
+    private javax.swing.JTextArea txtdescripcion;
     private javax.swing.JTextField txtidhabitacion;
-    private javax.swing.JTextField txtnumero1;
+    private javax.swing.JTextField txtnumero;
     private javax.swing.JTextField txtprecio_diario;
     // End of variables declaration//GEN-END:variables
 }
