@@ -26,7 +26,7 @@ public class FHabitacion {
     public DefaultTableModel mostrar(String buscar) {
         DefaultTableModel modelo;
         String [] titulos = { "ID", "Numero", "piso", "Descripcion", "Caracteristicas", "Precio", "Estado", "Tipo Habitación" };
-        String [] registro = new String[0];
+        String [] registro = new String[8];
         totalregistros = 0;
         modelo = new DefaultTableModel(null, titulos);
         sSQL = "SELECT * FROM habitacion WHERE piso like '%" + buscar + "%' ORDER BY idhabitacion";
@@ -54,10 +54,11 @@ public class FHabitacion {
     }
     
     public boolean insertar(VHabitacion dts) {
-        sSQL = "INSERT INTO habitacion(numero, piso, descripcion, caracteristicas, precio_diario, estado, tipo_habitacion VALUES(?,?,?,?,?,?,?)";
+        sSQL = "INSERT INTO habitacion(numero, piso, descripcion, caracteristicas, precio_diario, estado, tipo_habitacion) VALUES(?,?,?,?,?,?,?)";
         try {
             PreparedStatement pst = cn.prepareStatement(sSQL);
             pst.setString(1, dts.getNumero());
+            System.out.println(dts.getPiso());
             pst.setString(2, dts.getPiso());
             pst.setString(3, dts.getDescripcion());
             pst.setString(4, dts.getCaracteristicas());
